@@ -1,4 +1,5 @@
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
+import { useEffect } from "react";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { useCMS } from "../context/CMSContext";
@@ -6,6 +7,12 @@ import { Phone, MessageCircle } from "lucide-react";
 
 export default function RootLayout() {
   const { content } = useCMS();
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
   const phone = content.global?.contactPhone || "+91 9928375767";
   const cleanPhone = phone.replace(/\D/g, "");
 
