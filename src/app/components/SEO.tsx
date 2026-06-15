@@ -8,7 +8,7 @@ interface SEOProps {
 
 export function SEO({ title, description, ogImage = "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1200&h=630&fit=crop&auto=format" }: SEOProps) {
   useEffect(() => {
-    document.title = `${title} | Route Story`;
+    document.title = title === "Route Story" ? "Route Story" : `${title} | Route Story`;
 
     const setMeta = (name: string, content: string, property = false) => {
       const selector = property ? `meta[property="${name}"]` : `meta[name="${name}"]`;

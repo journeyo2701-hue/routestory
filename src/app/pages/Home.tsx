@@ -685,7 +685,7 @@ export default function Home() {
   return (
     <>
       <SEO
-        title="Premium Travel Experiences Across India"
+        title="Route Story"
         description="Route Story crafts immersive, handpicked journeys across India — from the Himalayas to the backwaters. Every journey has a story."
       />
       <HeroSection />
