@@ -75,8 +75,6 @@ export default function Experiences() {
   const desktopScrollRef = useRef<HTMLDivElement>(null);
   const [desktopActiveIndex, setDesktopActiveIndex] = useState(0);
 
-  const mobileScrollRef = useRef<HTMLDivElement>(null);
-  const [mobileActiveIndex, setMobileActiveIndex] = useState(0);
 
   const chunkReviews = (arr: any[], size: number) => {
     const chunks = [];
@@ -119,35 +117,6 @@ export default function Experiences() {
     scrollToDesktopPage(nextIndex);
   };
 
-  const handleMobileScroll = () => {
-    if (mobileScrollRef.current) {
-      const container = mobileScrollRef.current;
-      const { scrollLeft, clientWidth } = container;
-      const index = Math.round(scrollLeft / clientWidth);
-      setMobileActiveIndex(index);
-    }
-  };
-
-  const scrollToMobilePage = (index: number) => {
-    if (mobileScrollRef.current) {
-      const container = mobileScrollRef.current;
-      container.scrollTo({
-        left: index * container.clientWidth,
-        behavior: "smooth"
-      });
-      setMobileActiveIndex(index);
-    }
-  };
-
-  const mobileScrollLeft = () => {
-    const prevIndex = Math.max(0, mobileActiveIndex - 1);
-    scrollToMobilePage(prevIndex);
-  };
-
-  const mobileScrollRight = () => {
-    const nextIndex = Math.min((reviews || []).length - 1, mobileActiveIndex + 1);
-    scrollToMobilePage(nextIndex);
-  };
 
   const handleAddReview = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -460,66 +429,18 @@ export default function Experiences() {
               )}
             </div>
 
-            {/* Mobile Carousel (1 Card per slide) */}
-            <div className="flex flex-col justify-between h-full md:hidden mt-8">
-              {/* Header with Arrows on the right */}
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-[11px] tracking-[0.25em] uppercase text-[var(--color-text-primary)]/40 font-semibold" style={{ fontFamily: "'Inter', sans-serif", color: gridColors?.text ? `${gridColors.text}66` : undefined }}>
-                  Guest Reviews
-                </h3>
-                {reviews && reviews.length > 1 && (
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={mobileScrollLeft}
-                      className="w-8 h-8 border border-[var(--color-text-primary)]/10 rounded-full flex items-center justify-center hover:bg-[var(--color-accent-primary)]/10 text-[var(--color-text-primary)] transition-all duration-300 focus:outline-none cursor-pointer"
-                      style={{ borderColor: gridColors?.text ? `${gridColors.text}1a` : undefined }}
-                    >
-                      <ChevronLeft size={16} style={{ color: gridColors?.text || undefined }} />
-                    </button>
-                    <button
-                      onClick={mobileScrollRight}
-                      className="w-8 h-8 border border-[var(--color-text-primary)]/10 rounded-full flex items-center justify-center hover:bg-[var(--color-accent-primary)]/10 text-[var(--color-text-primary)] transition-all duration-300 focus:outline-none cursor-pointer"
-                      style={{ borderColor: gridColors?.text ? `${gridColors.text}1a` : undefined }}
-                    >
-                      <ChevronRight size={16} style={{ color: gridColors?.text || undefined }} />
-                    </button>
+            {/* Mobile Vertical List */}
+            <div className="flex flex-col md:hidden mt-8">
+              <h3 className="text-[11px] tracking-[0.25em] uppercase text-[var(--color-text-primary)]/40 font-semibold mb-6" style={{ fontFamily: "'Inter', sans-serif", color: gridColors?.text ? `${gridColors.text}66` : undefined }}>
+                Guest Reviews
+              </h3>
+              <div className="flex flex-col gap-6">
+                {(reviews || []).map((review) => (
+                  <div key={review.id} className="w-full">
+                    <ReviewCard review={review} gridColors={gridColors} />
                   </div>
-                )}
+                ))}
               </div>
-
-              <div className="relative">
-                <div
-                  ref={mobileScrollRef}
-                  onScroll={handleMobileScroll}
-                  className="flex overflow-x-auto snap-x snap-mandatory pb-6 scrollbar-hide"
-                  style={{ scrollBehavior: "smooth" }}
-                >
-                  {(reviews || []).map((review) => (
-                    <div key={review.id} className="w-full shrink-0 snap-start">
-                      <ReviewCard review={review} gridColors={gridColors} />
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Mobile Navigation Dots */}
-              {reviews && reviews.length > 1 && (
-                <div className="flex justify-center items-center gap-6 mt-4">
-                  <div className="flex gap-2">
-                    {reviews.map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => scrollToMobilePage(index)}
-                        className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                          mobileActiveIndex === index
-                            ? "bg-[var(--color-accent-secondary)] w-6"
-                            : "bg-[var(--color-text-primary)]/20 hover:bg-[var(--color-text-primary)]/40"
-                        } cursor-pointer`}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
