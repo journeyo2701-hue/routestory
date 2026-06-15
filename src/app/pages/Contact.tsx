@@ -170,7 +170,7 @@ function ContactForm() {
         </label>
         <input
           name="travelDate"
-          type="month"
+          type="date"
           value={form.travelDate}
           onChange={handleChange}
           className="w-full bg-transparent border-b border-[var(--color-text-primary)]/20 py-3 text-[14px] text-[var(--color-text-primary)] focus:outline-none focus:border-[var(--color-text-primary)] transition-colors"
@@ -183,13 +183,12 @@ function ContactForm() {
           className="block text-[11px] tracking-[0.2em] uppercase text-[var(--color-text-primary)]/50 mb-2"
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
-          Tell Us Your Story *
+          Tell Us Your Story
         </label>
         <textarea
           name="message"
           value={form.message}
           onChange={handleChange}
-          required
           rows={5}
           className="w-full bg-transparent border-b border-[var(--color-text-primary)]/20 py-3 text-[14px] text-[var(--color-text-primary)] placeholder-[var(--color-text-primary)]/30 focus:outline-none focus:border-[var(--color-text-primary)] transition-colors resize-none"
           style={{ fontFamily: "'Inter', sans-serif" }}
