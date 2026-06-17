@@ -123,7 +123,7 @@ export default function AdminLayout() {
 
             <button
               type="submit"
-              className="w-full bg-[#2D3748] hover:bg-[#5B6E82] text-white font-medium text-xs tracking-widest uppercase py-3.5 px-4 rounded-xl shadow-md active:scale-[0.98] transition-all cursor-pointer mt-2"
+              className="w-full bg-[#2D3748] hover:bg-[#E9EEF3] hover:text-[#2D3748] text-white font-medium text-xs tracking-widest uppercase py-3.5 px-4 rounded-xl shadow-md active:scale-[0.98] transition-all cursor-pointer mt-2"
               style={{ fontFamily: "'Inter', sans-serif" }}
             >
               Sign In
@@ -224,7 +224,7 @@ export default function AdminLayout() {
               <button
                 onClick={saveChanges}
                 disabled={isSaving}
-                className="bg-[#5B6E82] hover:bg-[#475569] text-white text-[11px] tracking-[0.15em] uppercase font-bold px-5 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                className="bg-[#E9EEF3] hover:bg-[#DCE4EC] text-[#2D3748] text-[11px] tracking-[0.15em] uppercase font-bold px-5 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 {isSaving && <Loader2 className="w-3.5 h-3.5 animate-spin" />}

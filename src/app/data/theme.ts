@@ -5,7 +5,7 @@ export const defaultTheme = {
     backgroundLight: "#F3F5F7",
     textPrimary: "#2D3748",
     textInverse: "#FFFFFF",
-    accentPrimary: "#5B6E82",
+    accentPrimary: "#E9EEF3",
     accentSecondary: "#7A90A8",
   }
 };

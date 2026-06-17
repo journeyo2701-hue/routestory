@@ -103,7 +103,7 @@ export default function AdminTheme() {
     backgroundLight: "#E8EBEC",
     textPrimary: "#2D2D2D",
     textInverse: "#FFFFFF",
-    accentPrimary: "#D8C7A1",
+    accentPrimary: "#E9EEF3",
     accentSecondary: "#8F9E92",
   };
 
@@ -121,7 +121,7 @@ export default function AdminTheme() {
   };
 
   const sectionColors = content.sectionColors || {};
-  const pageColors = sectionColors[selectedPage] || {};
+  const pageColors = (sectionColors[selectedPage] || {}) as Record<string, { bg: string; text: string }>;
 
   const handleSectionUpdate = (sectionKey: string, field: 'bg' | 'text', value: string) => {
     const updated = {

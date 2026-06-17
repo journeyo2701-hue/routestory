@@ -98,23 +98,6 @@ function HeroSection() {
             Customize My Trip
           </Link>
         </motion.div>
-
-        {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2, duration: 1 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        >
-          <span className="text-[10px] tracking-[0.3em] uppercase text-white/40" style={{ fontFamily: "'Inter', sans-serif" }}>
-            Scroll
-          </span>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 1.5 }}
-            className="w-px h-10 bg-gradient-to-b from-white/40 to-transparent"
-          />
-        </motion.div>
       </motion.div>
     </section>
   );
@@ -696,7 +679,7 @@ function CTASection() {
         <motion.div variants={fadeUp} transition={{ duration: 0.6 }}>
           <Link
             to="/contact"
-            className="group inline-flex items-center gap-3 bg-[#5B6E82] text-white px-10 py-5 text-[12px] tracking-[0.25em] uppercase hover:bg-[#2D3748] transition-all duration-300"
+            className="group inline-flex items-center gap-3 bg-[#E9EEF3] text-[#2D3748] px-10 py-5 text-[12px] tracking-[0.25em] uppercase hover:bg-[#DCE4EC] transition-all duration-300"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
             Plan My Journey

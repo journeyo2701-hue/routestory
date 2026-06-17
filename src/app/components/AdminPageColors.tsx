@@ -61,7 +61,7 @@ export function AdminPageColors({ pageKey }: AdminPageColorsProps) {
     backgroundLight: "#E8EBEC",
     textPrimary: "#2D2D2D",
     textInverse: "#FFFFFF",
-    accentPrimary: "#D8C7A1",
+    accentPrimary: "#E9EEF3",
     accentSecondary: "#8F9E92",
   };
 
@@ -109,7 +109,7 @@ export function AdminPageColors({ pageKey }: AdminPageColorsProps) {
 
   const pageMeta = pageSections[pageKey];
   const sectionColors = content.sectionColors || {};
-  const pageColors = sectionColors[pageKey] || {};
+  const pageColors = (sectionColors[pageKey] || {}) as Record<string, { bg: string; text: string }>;
 
   const handleSectionUpdate = (sectionKey: string, field: 'bg' | 'text', value: string) => {
     const updated = {
