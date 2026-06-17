@@ -71,6 +71,7 @@ export default function Experiences() {
   const [formData, setFormData] = useState({ author: "", email: "", location: "", journey: "", quote: "", rating: 5 });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [visibleMobileCount, setVisibleMobileCount] = useState(3);
 
   const desktopScrollRef = useRef<HTMLDivElement>(null);
   const [desktopActiveIndex, setDesktopActiveIndex] = useState(0);
@@ -435,12 +436,42 @@ export default function Experiences() {
                 Guest Reviews
               </h3>
               <div className="flex flex-col gap-6">
-                {(reviews || []).map((review) => (
+                {(reviews || []).slice(0, visibleMobileCount).map((review) => (
                   <div key={review.id} className="w-full">
                     <ReviewCard review={review} gridColors={gridColors} />
                   </div>
                 ))}
               </div>
+              {((reviews || []).length > visibleMobileCount || visibleMobileCount > 3) && (
+                <div className="flex gap-4 mt-8">
+                  {(reviews || []).length > visibleMobileCount && (
+                    <button
+                      onClick={() => setVisibleMobileCount((prev) => prev + 3)}
+                      className="flex-1 text-center border border-[var(--color-text-primary)]/20 py-4 text-[12px] tracking-[0.2em] uppercase hover:bg-[var(--color-text-primary)] hover:text-white transition-all duration-300 font-medium"
+                      style={{ 
+                        fontFamily: "'Inter', sans-serif", 
+                        color: gridColors?.text || undefined,
+                        borderColor: gridColors?.text ? `${gridColors.text}33` : undefined
+                      }}
+                    >
+                      Read More
+                    </button>
+                  )}
+                  {visibleMobileCount > 3 && (
+                    <button
+                      onClick={() => setVisibleMobileCount(3)}
+                      className="flex-1 text-center border border-[var(--color-text-primary)]/20 py-4 text-[12px] tracking-[0.2em] uppercase hover:bg-[var(--color-text-primary)] hover:text-white transition-all duration-300 font-medium"
+                      style={{ 
+                        fontFamily: "'Inter', sans-serif", 
+                        color: gridColors?.text || undefined,
+                        borderColor: gridColors?.text ? `${gridColors.text}33` : undefined
+                      }}
+                    >
+                      Show Less
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>

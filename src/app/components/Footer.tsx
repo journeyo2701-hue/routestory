@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { Instagram, Twitter, Facebook, Youtube } from "lucide-react";
+import { Instagram, Twitter, Facebook, Youtube, Linkedin } from "lucide-react";
 import { useState } from "react";
 import { useCMS } from "../context/CMSContext";
 
@@ -52,21 +52,24 @@ export function Footer() {
         {/* Social Media Links */}
         <div className="flex gap-4">
           {[
-            { Icon: Instagram, url: globalData.socialLinks?.instagram || "#" },
-            { Icon: Twitter, url: globalData.socialLinks?.twitter || "#" },
-            { Icon: Facebook, url: globalData.socialLinks?.facebook || "#" },
-            { Icon: Youtube, url: globalData.socialLinks?.youtube || "#" },
-          ].map(({ Icon, url }, i) => (
-            <a
-              key={i}
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 transition-all duration-300"
-            >
-              <Icon size={15} />
-            </a>
-          ))}
+            { Icon: Instagram, url: globalData.socialLinks?.instagram },
+            { Icon: Twitter, url: globalData.socialLinks?.twitter },
+            { Icon: Facebook, url: globalData.socialLinks?.facebook },
+            { Icon: Youtube, url: globalData.socialLinks?.youtube },
+            { Icon: Linkedin, url: globalData.socialLinks?.linkedin },
+          ]
+            .filter(({ url }) => url && url.trim() !== "" && url.trim() !== "#")
+            .map(({ Icon, url }, i) => (
+              <a
+                key={i}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 transition-all duration-300"
+              >
+                <Icon size={15} />
+              </a>
+            ))}
         </div>
 
         {/* Bottom copyright & policies */}

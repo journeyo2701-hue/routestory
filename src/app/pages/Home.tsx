@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 import { ArrowRight, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { SEO } from "../components/SEO";
-import { useCMS } from "../context/CMSContext";
+import { useCMS, SiteContent } from "../context/CMSContext";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -42,7 +42,7 @@ function HeroSection() {
           initial={{ opacity: 0, letterSpacing: "0.5em" }}
           animate={{ opacity: 1, letterSpacing: "0.35em" }}
           transition={{ duration: 1.2, delay: 0.3 }}
-          className="text-[11px] tracking-[0.35em] uppercase text-[var(--color-accent-primary)] mb-8"
+          className="text-[11px] tracking-[0.35em] uppercase text-white mb-8"
           style={{ fontFamily: "'Inter', sans-serif", color: colors?.text || undefined }}
         >
           {heroData.subtitle}
@@ -63,7 +63,7 @@ function HeroSection() {
         >
           {heroData.title1}
           <br />
-          <em className="not-italic text-[var(--color-accent-primary)]" style={{ color: colors?.text || undefined }}>{heroData.titleHighlight}</em>{heroData.title2}
+          <em className="not-italic text-white" style={{ color: colors?.text || undefined }}>{heroData.titleHighlight}</em>{heroData.title2}
         </motion.h1>
 
         <motion.p
@@ -123,6 +123,14 @@ function HeroSection() {
 function WhySection() {
   const { content } = useCMS();
   const whyData = content.home.why;
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = (direction: "left" | "right") => {
+    if (scrollRef.current) {
+      const scrollAmount = direction === "left" ? -scrollRef.current.clientWidth * 0.85 : scrollRef.current.clientWidth * 0.85;
+      scrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    }
+  };
   
   const cards = [
     {
@@ -160,14 +168,14 @@ function WhySection() {
   const colors = content.sectionColors?.home?.why;
 
   return (
-    <section className="bg-[var(--color-bg)] py-28 px-6 lg:px-10" style={{ backgroundColor: colors?.bg || undefined, color: colors?.text || undefined }}>
+    <section className="bg-[var(--color-bg)] pt-16 pb-0 md:py-28 px-6 lg:px-10" style={{ backgroundColor: colors?.bg || undefined, color: colors?.text || undefined }}>
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
           variants={{ visible: { transition: { staggerChildren: 0.15 } } }}
-          className="text-center mb-20"
+          className="text-center mb-10 md:mb-20"
         >
           <motion.p
             variants={fadeUp}
@@ -192,12 +200,31 @@ function WhySection() {
           </motion.h2>
         </motion.div>
 
+        {/* Mobile Navigation Arrows */}
+        <div className="flex justify-end gap-2 mb-6 md:hidden">
+          <button
+            onClick={() => handleScroll("left")}
+            className="w-10 h-10 border border-[var(--color-text-primary)]/20 flex items-center justify-center text-[var(--color-text-primary)]/50 active:text-[var(--color-text-primary)] active:border-[var(--color-text-primary)] transition-all bg-white"
+            aria-label="Scroll left"
+          >
+            <ChevronLeft size={16} />
+          </button>
+          <button
+            onClick={() => handleScroll("right")}
+            className="w-10 h-10 border border-[var(--color-text-primary)]/20 flex items-center justify-center text-[var(--color-text-primary)]/50 active:text-[var(--color-text-primary)] active:border-[var(--color-text-primary)] transition-all bg-white"
+            aria-label="Scroll right"
+          >
+            <ChevronRight size={16} />
+          </button>
+        </div>
+
         <motion.div
+          ref={scrollRef}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
           variants={{ visible: { transition: { staggerChildren: 0.15 } } }}
-          className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide md:grid md:grid-cols-3 gap-px bg-[var(--color-bg-light)] -mx-6 px-6 md:mx-0 md:px-0 pb-4 md:pb-0"
+          className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide md:grid md:grid-cols-3 gap-4 md:gap-px bg-transparent md:bg-[var(--color-bg-light)] -mx-6 px-6 md:mx-0 md:px-0 pb-4 md:pb-0"
         >
           {cards.map((card) => (
             <motion.div
@@ -241,7 +268,7 @@ function FeaturedJourneys() {
 
   return (
     <>
-      <section className="bg-[var(--color-bg-light)] py-28 px-6 lg:px-10" style={{ backgroundColor: colors?.bg || undefined, color: colors?.text || undefined }}>
+      <section className="bg-[var(--color-bg-light)] pt-10 pb-16 md:py-28 px-6 lg:px-10" style={{ backgroundColor: colors?.bg || undefined, color: colors?.text || undefined }}>
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
@@ -430,7 +457,7 @@ function OurStorySection() {
   const colors = content.sectionColors?.home?.ourStory;
 
   return (
-    <section className="bg-[var(--color-bg)] py-28 px-6 lg:px-10" style={{ backgroundColor: colors?.bg || undefined, color: colors?.text || undefined }}>
+    <section className="bg-[var(--color-bg)] py-16 md:py-28 px-6 lg:px-10" style={{ backgroundColor: colors?.bg || undefined, color: colors?.text || undefined }}>
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
         {/* Image */}
         <motion.div
@@ -529,7 +556,7 @@ function TestimonialsSection() {
   const colors = content.sectionColors?.home?.testimonials;
 
   return (
-    <section className="bg-gray-200 py-28 px-6 lg:px-10 overflow-hidden" style={{ backgroundColor: colors?.bg || undefined, color: colors?.text || undefined }}>
+    <section className="bg-gray-200 py-16 md:py-28 px-6 lg:px-10 overflow-hidden" style={{ backgroundColor: colors?.bg || undefined, color: colors?.text || undefined }}>
       <div className="max-w-4xl mx-auto">
         <motion.p
           initial={{ opacity: 0 }}
@@ -579,7 +606,7 @@ function TestimonialsSection() {
   );
 }
 
-function AnimatedTestimonial({ testimonial, customTextColor }: { testimonial: typeof testimonials[0]; customTextColor?: string }) {
+function AnimatedTestimonial({ testimonial, customTextColor }: { testimonial: SiteContent["testimonialsData"][number]; customTextColor?: string }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -622,7 +649,7 @@ function CTASection() {
   const colors = content.sectionColors?.home?.cta;
 
   return (
-    <section className="relative py-40 px-6 overflow-hidden">
+    <section className="relative py-20 md:py-40 px-6 overflow-hidden">
       <img
         src={ctaData.image}
         alt="CTA Background"
@@ -639,7 +666,7 @@ function CTASection() {
         <motion.p
           variants={fadeUp}
           transition={{ duration: 0.6 }}
-          className="text-[11px] tracking-[0.35em] uppercase text-[var(--color-accent-primary)] mb-6"
+          className="text-[11px] tracking-[0.35em] uppercase text-white mb-6"
           style={{ fontFamily: "'Inter', sans-serif", color: colors?.text || undefined }}
         >
           {ctaData.subtitle}
