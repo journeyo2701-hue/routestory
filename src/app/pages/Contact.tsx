@@ -57,7 +57,7 @@ function ContactForm() {
       >
         <div className="w-16 h-16 border border-[var(--color-accent-secondary)] flex items-center justify-center mx-auto mb-8">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M5 12l5 5L19 7" stroke="var(--color-accent-secondary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M5 12l5 5L19 7" stroke="var(--color-accent-secondary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
         <h3
