@@ -77,6 +77,9 @@ export function Footer() {
           <p className="text-[11px] text-white/30 tracking-wider font-medium" style={{ fontFamily: "'Inter', sans-serif" }}>
             © {new Date().getFullYear()} {globalData.logoText}. All rights reserved.
           </p>
+          <p className="text-[10px] text-white/25 tracking-[0.15em] font-medium uppercase" style={{ fontFamily: "'Inter', sans-serif" }}>
+            DEVELOPED BY <a href="https://avaialable.com" target="_blank" rel="noopener noreferrer" className="hover:text-white/50 transition-colors underline decoration-white/10">AVAIALABLE.COM</a>
+          </p>
           <div className="flex gap-6">
             <button 
               onClick={() => setPolicyModal({
