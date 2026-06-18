@@ -266,6 +266,7 @@ export default function Contact() {
 
   const heroColors = content.sectionColors?.contact?.hero;
   const formColors = content.sectionColors?.contact?.form;
+  const whatsappColors = content.sectionColors?.contact?.whatsappBox;
   const faqColors = content.sectionColors?.contact?.faq;
 
   return (
@@ -343,7 +344,7 @@ export default function Contact() {
             className="space-y-10"
           >
             {/* WhatsApp CTA */}
-            <div className="bg-[var(--color-text-primary)] p-8" style={{ backgroundColor: formColors?.text || undefined, color: formColors?.bg || undefined }}>
+            <div className="bg-[var(--color-text-primary)] p-8" style={{ backgroundColor: whatsappColors?.bg || undefined, color: whatsappColors?.text || undefined }}>
               <p
                 className="text-[11px] tracking-[0.3em] uppercase text-[var(--color-accent-secondary)] mb-3"
                 style={{ fontFamily: "'Inter', sans-serif" }}
@@ -352,7 +353,7 @@ export default function Contact() {
               </p>
               <h3
                 className="text-white mb-4"
-                style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, fontSize: "1.3rem", color: formColors?.bg ? 'var(--color-bg)' : undefined }}
+                style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, fontSize: "1.3rem", color: whatsappColors?.text || undefined }}
               >
                 Reach Us on WhatsApp
               </h3>

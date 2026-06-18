@@ -72,12 +72,28 @@ export function CMSProvider({ children }: { children: ReactNode }) {
                   ...Object.keys(parsed.destinationsData),
                 ])
               ).reduce((acc, category) => {
-                acc[category] = (parsed.destinationsData[category] || []).map((dest: any) => ({
-                  price: "18500",
-                  duration: "6 Days / 5 Nights",
-                  difficulty: "Moderate",
-                  ...dest
-                }));
+                // Flatten all initial destinations for lookup by ID
+                const allInitialDests = Object.values(initialSiteContent.destinationsData).flat() as any[];
+                acc[category] = (parsed.destinationsData[category] || []).map((dest: any) => {
+                  // Find the original destination from initialContent by ID to preserve itinerary & image
+                  const original = allInitialDests.find((d: any) => d.id === dest.id) || {};
+                  // Use DB image only if it's a custom upload (cloudinary/non-unsplash),
+                  // otherwise always use the correct original image from initialContent
+                  const isCustomImage = dest.image && !dest.image.includes('images.unsplash.com');
+                  return {
+                    price: "18500",
+                    duration: "6 Days / 5 Nights",
+                    difficulty: "Moderate",
+                    ...original,   // base: full data including correct image & itinerary from initialContent
+                    ...dest,       // override: DB saved fields (name, description, price, etc.)
+                    // Preserve original image unless admin uploaded a custom one
+                    image: isCustomImage ? dest.image : ((original as any).image || dest.image),
+                    // Always prefer initialContent itinerary if DB one is missing/empty
+                    itinerary: (dest.itinerary && dest.itinerary.length > 0)
+                      ? dest.itinerary
+                      : ((original as any).itinerary || []),
+                  };
+                });
                 return acc;
               }, {} as any)
             : initialSiteContent.destinationsData,

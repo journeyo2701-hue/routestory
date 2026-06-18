@@ -44,6 +44,7 @@ const pageSections: Record<string, { label: string; sections: { key: string; lab
     sections: [
       { key: "hero", label: "Hero Section" },
       { key: "form", label: "Contact Form & Details" },
+      { key: "whatsappBox", label: "WhatsApp Chat Box" },
       { key: "faq", label: "FAQ Section" },
     ]
   }
@@ -84,6 +85,7 @@ const getSectionDefaults = (pageKey: string, sectionKey: string, theme: any) => 
     contact: {
       hero: { bg: bg, text: textPrimary },
       form: { bg: bg, text: textPrimary },
+      whatsappBox: { bg: textPrimary, text: bg },
       faq: { bg: bgLight, text: textPrimary }
     }
   };

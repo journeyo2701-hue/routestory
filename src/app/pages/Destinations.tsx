@@ -12,9 +12,18 @@ const fadeUp = {
 
 // Categories are dynamically generated inside Destinations component
 
+function getDuration(dest: any): string {
+  const days = dest.itinerary?.length;
+  if (days && days > 0) {
+    return `${days} Day${days > 1 ? "s" : ""} / ${days - 1} Night${days - 1 !== 1 ? "s" : ""}`;
+  }
+  return dest.duration || "6 Days / 5 Nights";
+}
+
 function DestinationCard({ dest, index }: { dest: any; index: number }) {
   const isEven = index % 2 === 0;
   const [showItinerary, setShowItinerary] = useState(false);
+  const duration = getDuration(dest);
 
   return (
     <>
@@ -59,7 +68,7 @@ function DestinationCard({ dest, index }: { dest: any; index: number }) {
         <div className="w-full lg:w-[45%] flex flex-col justify-center px-4 lg:px-0">
           <div className="flex flex-wrap gap-3 mb-6">
             <span className="flex items-center gap-1.5 border border-[var(--color-text-primary)]/20 text-[var(--color-text-primary)]/70 px-3 py-1.5 text-[10px] tracking-wider uppercase rounded-full" style={{ fontFamily: "'Inter', sans-serif" }}>
-              <Clock size={12} /> {dest.duration || "6 Days / 5 Nights"}
+              <Clock size={12} /> {duration}
             </span>
             <span className="flex items-center gap-1.5 border border-[var(--color-accent-secondary)] text-[var(--color-accent-secondary)] px-3 py-1.5 text-[10px] tracking-wider uppercase rounded-full bg-[var(--color-accent-secondary)]/10" style={{ fontFamily: "'Inter', sans-serif" }}>
               <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent-secondary)]" /> {dest.difficulty || "Moderate"}
@@ -128,7 +137,7 @@ function DestinationCard({ dest, index }: { dest: any; index: number }) {
                     {dest.name} Itinerary
                   </h3>
                   <p className="text-[var(--color-accent-secondary)] text-[11px] tracking-widest uppercase mt-1" style={{ fontFamily: "'Inter', sans-serif" }}>
-                    {dest.duration || "6 Days / 5 Nights"}
+                    {duration}
                   </p>
                 </div>
                 <button
@@ -142,20 +151,18 @@ function DestinationCard({ dest, index }: { dest: any; index: number }) {
               {/* Body */}
               <div className="overflow-y-auto p-6 lg:p-10">
                 {dest.itinerary && dest.itinerary.length > 0 ? (
-                  <div className="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
+                  <div className="space-y-6 relative before:absolute before:left-5 before:top-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
                     {dest.itinerary.map((day: any, idx: number) => (
-                      <div key={idx} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                      <div key={idx} className="relative flex items-start gap-4">
                         {/* Icon */}
-                        <div className="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-300 group-[.is-active]:bg-[var(--color-accent-secondary)] text-slate-500 group-[.is-active]:text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-[var(--color-accent-secondary)] text-white shadow flex-shrink-0 z-10">
                           <span className="text-xs font-bold font-sans">{idx + 1}</span>
                         </div>
                         {/* Card */}
-                        <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-[#f8f9fa] p-5 rounded-lg shadow-sm border border-[var(--color-text-primary)]/5">
-                          <div className="flex items-center justify-between mb-2">
-                            <span className="text-[var(--color-accent-secondary)] text-[10px] uppercase tracking-wider font-semibold" style={{ fontFamily: "'Inter', sans-serif" }}>
-                              {day.day}
-                            </span>
-                          </div>
+                        <div className="flex-1 bg-white p-5 rounded-lg shadow-sm border border-[var(--color-text-primary)]/5">
+                          <span className="text-[var(--color-accent-secondary)] text-[10px] uppercase tracking-wider font-semibold block mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>
+                            {day.day}
+                          </span>
                           <h4 className="text-[var(--color-text-primary)] font-semibold text-lg mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
                             {day.title}
                           </h4>
@@ -289,28 +296,26 @@ export default function Destinations() {
         <section className="px-6 lg:px-10 pb-32" style={{ backgroundColor: gridColors?.bg || undefined, color: gridColors?.text || undefined }}>
           <div className="max-w-7xl mx-auto">
             {/* Filter Categories & Search */}
-            <div 
-              className="sticky top-[73px] z-40 bg-[var(--color-bg)] pt-4 pb-4 border-b border-black/5 mb-12 -mx-6 px-6 lg:mx-0 lg:px-0"
+            <div
+              className="sticky top-[73px] z-40 bg-[var(--color-bg)] pt-6 pb-6 border-b border-black/5 mb-12 -mx-6 px-6 lg:mx-0 lg:px-0"
               style={{ backgroundColor: gridColors?.bg || undefined, borderColor: gridColors?.text ? `${gridColors.text}1a` : undefined }}
             >
-              <div className="flex flex-col md:flex-row gap-4 md:items-center max-w-7xl mx-auto">
+              <div className="flex flex-col gap-6 max-w-7xl mx-auto">
                 {/* Search Bar */}
-                <div className="relative w-full md:w-64 flex-none">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-black/40" size={14} style={{ color: gridColors?.text || undefined }} />
+                <div className="relative w-full md:w-96">
+                  <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-black/40" size={16} style={{ color: gridColors?.text || undefined }} />
                   <input
                     type="text"
-                    placeholder="Search destinations..."
+                    placeholder="Search by destination, state, or keywords..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-5 py-3 rounded-full text-[12px] bg-[#fafafa] border border-black/10 focus:border-black/30 outline-none font-medium transition-colors duration-300 placeholder:text-black/30 text-gray-800"
+                    className="w-full pl-12 pr-6 py-3.5 rounded-full text-[13px] bg-white border border-black/10 focus:border-black/30 focus:shadow-md outline-none font-medium transition-all duration-300 placeholder:text-black/30 text-gray-800"
                     style={{ fontFamily: "'Inter', sans-serif" }}
                   />
                 </div>
 
-                <div className="hidden md:block w-px h-6 bg-black/10 flex-none mx-2" style={{ backgroundColor: gridColors?.text ? `${gridColors.text}1a` : undefined }} />
-
                 {/* Categories */}
-                <div className="flex overflow-x-auto gap-3 w-full scrollbar-hide pb-2 md:pb-0">
+                <div className="flex flex-wrap gap-3 w-full">
                   {categoriesList.map((cat) => (
                     <button
                       key={cat.key}
@@ -319,7 +324,7 @@ export default function Destinations() {
                         ? "bg-[#0a0a0a] text-white border border-[#0a0a0a]"
                         : "bg-transparent border border-black/20 text-black/70 hover:border-black hover:text-black"
                         }`}
-                      style={{ 
+                      style={{
                         fontFamily: "'Inter', sans-serif",
                         color: activeCategory !== cat.key && gridColors?.text ? gridColors.text : undefined,
                         borderColor: activeCategory !== cat.key && gridColors?.text ? `${gridColors.text}33` : undefined

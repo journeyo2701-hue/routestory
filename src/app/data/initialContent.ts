@@ -6,7 +6,7 @@ import { defaultTheme } from "./theme";
 const allDests = Object.keys(destinations).flatMap((region) => {
   return (destinations as any)[region].map((dest: any) => ({
     price: "18500",
-    duration: "6 Days / 5 Nights",
+    duration: "4 Days / 3 Nights",
     difficulty: "Moderate",
     ...dest
   }));
@@ -182,6 +182,7 @@ export const initialSiteContent = {
     contact: {
       hero: { bg: "", text: "" },
       form: { bg: "", text: "" },
+      whatsappBox: { bg: "", text: "" },
       faq: { bg: "", text: "" }
     }
   }

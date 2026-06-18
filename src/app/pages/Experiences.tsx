@@ -1,8 +1,8 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { motion } from "motion/react";
 import { SEO } from "../components/SEO";
 import { useCMS } from "../context/CMSContext";
-import { Quote, Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { Quote, Star } from "lucide-react";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -71,52 +71,7 @@ export default function Experiences() {
   const [formData, setFormData] = useState({ author: "", email: "", location: "", journey: "", quote: "", rating: 5 });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [visibleMobileCount, setVisibleMobileCount] = useState(3);
-
-  const desktopScrollRef = useRef<HTMLDivElement>(null);
-  const [desktopActiveIndex, setDesktopActiveIndex] = useState(0);
-
-
-  const chunkReviews = (arr: any[], size: number) => {
-    const chunks = [];
-    if (arr) {
-      for (let i = 0; i < arr.length; i += size) {
-        chunks.push(arr.slice(i, i + size));
-      }
-    }
-    return chunks;
-  };
-  const desktopPages = chunkReviews(reviews || [], 4);
-
-  const handleDesktopScroll = () => {
-    if (desktopScrollRef.current) {
-      const container = desktopScrollRef.current;
-      const { scrollLeft, clientWidth } = container;
-      const index = Math.round(scrollLeft / clientWidth);
-      setDesktopActiveIndex(index);
-    }
-  };
-
-  const scrollToDesktopPage = (index: number) => {
-    if (desktopScrollRef.current) {
-      const container = desktopScrollRef.current;
-      container.scrollTo({
-        left: index * container.clientWidth,
-        behavior: "smooth"
-      });
-      setDesktopActiveIndex(index);
-    }
-  };
-
-  const desktopScrollLeft = () => {
-    const prevIndex = Math.max(0, desktopActiveIndex - 1);
-    scrollToDesktopPage(prevIndex);
-  };
-
-  const desktopScrollRight = () => {
-    const nextIndex = Math.min(desktopPages.length - 1, desktopActiveIndex + 1);
-    scrollToDesktopPage(nextIndex);
-  };
+  const [showAll, setShowAll] = useState(false);
 
 
   const handleAddReview = async (e: React.FormEvent) => {
@@ -358,121 +313,74 @@ export default function Experiences() {
             </motion.div>
           </div>
 
-          {/* Right Column: Horizontal Page-based Carousel */}
-          <div className="lg:col-span-8 flex flex-col justify-between">
-            {/* Desktop Page-based Carousel (2x2 Grid per slide) */}
-            <div className="hidden md:flex flex-col justify-between h-full">
-              {/* Header with Arrows on the right */}
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-[12px] tracking-[0.25em] uppercase text-[var(--color-text-primary)]/40 font-semibold" style={{ fontFamily: "'Inter', sans-serif", color: gridColors?.text ? `${gridColors.text}66` : undefined }}>
-                  Guest Reviews
-                </h3>
-                {desktopPages.length > 1 && (
-                  <div className="flex items-center gap-3">
-                    <button
-                      onClick={desktopScrollLeft}
-                      className="w-10 h-10 border border-[var(--color-text-primary)]/10 rounded-full flex items-center justify-center hover:bg-[var(--color-accent-primary)]/10 text-[var(--color-text-primary)] transition-all duration-300 hover:scale-105 active:scale-95 focus:outline-none cursor-pointer"
-                      style={{ borderColor: gridColors?.text ? `${gridColors.text}1a` : undefined }}
-                    >
-                      <ChevronLeft size={18} style={{ color: gridColors?.text || undefined }} />
-                    </button>
-                    <button
-                      onClick={desktopScrollRight}
-                      className="w-10 h-10 border border-[var(--color-text-primary)]/10 rounded-full flex items-center justify-center hover:bg-[var(--color-accent-primary)]/10 text-[var(--color-text-primary)] transition-all duration-300 hover:scale-105 active:scale-95 focus:outline-none cursor-pointer"
-                      style={{ borderColor: gridColors?.text ? `${gridColors.text}1a` : undefined }}
-                    >
-                      <ChevronRight size={18} style={{ color: gridColors?.text || undefined }} />
-                    </button>
-                  </div>
+          {/* Right Column: Reviews Block */}
+          <div className="lg:col-span-8 flex flex-col">
+            {/* Header */}
+            <div className="flex justify-between items-center mb-6">
+              <h3
+                className="text-[12px] tracking-[0.25em] uppercase text-[var(--color-text-primary)]/40 font-semibold"
+                style={{ fontFamily: "'Inter', sans-serif", color: gridColors?.text ? `${gridColors.text}66` : undefined }}
+              >
+                Guest Reviews
+              </h3>
+              <span
+                className="text-[10px] tracking-widest uppercase text-[var(--color-text-primary)]/30"
+                style={{ fontFamily: "'Inter', sans-serif", color: gridColors?.text ? `${gridColors.text}55` : undefined }}
+              >
+                {(reviews || []).length} Stories
+              </span>
+            </div>
+
+            {/* Reviews container — fixed height when collapsed, scrollable when expanded */}
+            <div
+              className="overflow-y-auto pr-2 transition-all duration-500"
+              style={{
+                maxHeight: showAll ? "700px" : "620px",
+                scrollbarWidth: "thin",
+                scrollbarColor: "rgba(0,0,0,0.15) transparent"
+              }}
+            >
+              {/* Desktop: 2 column grid */}
+              <div className="hidden md:grid grid-cols-2 gap-6">
+                {(reviews || []).slice(0, showAll ? undefined : 4).map((review) => (
+                  <ReviewCard key={review.id} review={review} gridColors={gridColors} />
+                ))}
+                {(reviews || []).length === 0 && (
+                  <p className="col-span-2 text-center text-[var(--color-text-primary)]/40 py-16" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    No reviews yet. Be the first to share your story!
+                  </p>
                 )}
               </div>
 
-              <div className="relative">
-                <div
-                  ref={desktopScrollRef}
-                  onScroll={handleDesktopScroll}
-                  className="flex overflow-x-auto snap-x snap-mandatory pb-6 scrollbar-hide"
-                  style={{ scrollBehavior: "smooth" }}
-                >
-                  {desktopPages.map((page, pageIdx) => (
-                    <div 
-                      key={pageIdx}
-                      className="w-full shrink-0 snap-start grid grid-cols-2 gap-6"
-                    >
-                      {page.map((review) => (
-                        <ReviewCard key={review.id} review={review} gridColors={gridColors} />
-                      ))}
-                      {page.length < 4 && [...Array(4 - page.length)].map((_, i) => (
-                        <div key={`empty-${i}`} className="opacity-0 pointer-events-none" />
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Desktop Navigation Dots */}
-              {desktopPages.length > 1 && (
-                <div className="flex justify-center items-center gap-6 mt-4">
-                  <div className="flex gap-2">
-                    {desktopPages.map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => scrollToDesktopPage(index)}
-                        className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                          desktopActiveIndex === index
-                            ? "bg-[var(--color-accent-secondary)] w-6"
-                            : "bg-[var(--color-text-primary)]/20 hover:bg-[var(--color-text-primary)]/40"
-                        } cursor-pointer`}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Mobile Vertical List */}
-            <div className="flex flex-col md:hidden mt-8">
-              <h3 className="text-[11px] tracking-[0.25em] uppercase text-[var(--color-text-primary)]/40 font-semibold mb-6" style={{ fontFamily: "'Inter', sans-serif", color: gridColors?.text ? `${gridColors.text}66` : undefined }}>
-                Guest Reviews
-              </h3>
-              <div className="flex flex-col gap-6">
-                {(reviews || []).slice(0, visibleMobileCount).map((review) => (
+              {/* Mobile: single column */}
+              <div className="flex flex-col md:hidden gap-6">
+                {(reviews || []).slice(0, showAll ? undefined : 4).map((review) => (
                   <div key={review.id} className="w-full">
                     <ReviewCard review={review} gridColors={gridColors} />
                   </div>
                 ))}
+                {(reviews || []).length === 0 && (
+                  <p className="text-center text-[var(--color-text-primary)]/40 py-10" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    No reviews yet.
+                  </p>
+                )}
               </div>
-              {((reviews || []).length > visibleMobileCount || visibleMobileCount > 3) && (
-                <div className="flex gap-4 mt-8">
-                  {(reviews || []).length > visibleMobileCount && (
-                    <button
-                      onClick={() => setVisibleMobileCount((prev) => prev + 3)}
-                      className="flex-1 text-center border border-[var(--color-text-primary)]/20 py-4 text-[12px] tracking-[0.2em] uppercase hover:bg-[var(--color-text-primary)] hover:text-white transition-all duration-300 font-medium"
-                      style={{ 
-                        fontFamily: "'Inter', sans-serif", 
-                        color: gridColors?.text || undefined,
-                        borderColor: gridColors?.text ? `${gridColors.text}33` : undefined
-                      }}
-                    >
-                      Read More
-                    </button>
-                  )}
-                  {visibleMobileCount > 3 && (
-                    <button
-                      onClick={() => setVisibleMobileCount(3)}
-                      className="flex-1 text-center border border-[var(--color-text-primary)]/20 py-4 text-[12px] tracking-[0.2em] uppercase hover:bg-[var(--color-text-primary)] hover:text-white transition-all duration-300 font-medium"
-                      style={{ 
-                        fontFamily: "'Inter', sans-serif", 
-                        color: gridColors?.text || undefined,
-                        borderColor: gridColors?.text ? `${gridColors.text}33` : undefined
-                      }}
-                    >
-                      Show Less
-                    </button>
-                  )}
-                </div>
-              )}
             </div>
+
+            {/* Read More / Show Less button */}
+            {(reviews || []).length > 4 && (
+              <button
+                onClick={() => setShowAll((prev) => !prev)}
+                className="mt-6 w-full border border-[var(--color-text-primary)]/20 py-4 text-[12px] tracking-[0.2em] uppercase hover:bg-[var(--color-text-primary)] hover:text-white transition-all duration-300 font-medium rounded-lg"
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  color: gridColors?.text || undefined,
+                  borderColor: gridColors?.text ? `${gridColors.text}33` : undefined
+                }}
+              >
+                {showAll ? "Show Less" : `Read More · ${(reviews || []).length - 4} more stories`}
+              </button>
+            )}
           </div>
         </div>
       </section>
