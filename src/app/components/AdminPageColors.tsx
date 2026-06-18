@@ -48,6 +48,7 @@ const pageSections: Record<string, { label: string; sections: { key: string; lab
       { key: "hero", label: "Hero Section" },
       { key: "form", label: "Contact Form & Details" },
       { key: "whatsappBox", label: "WhatsApp Chat Box" },
+      { key: "whatsappButton", label: "WhatsApp Chat Button" },
       { key: "faq", label: "FAQ Section" },
     ]
   }
@@ -71,6 +72,7 @@ export function AdminPageColors({ pageKey }: AdminPageColorsProps) {
     const bgLight = theme.backgroundLight || "#E8EBEC";
     const bgDark = theme.backgroundDark || "#2D2D2D";
     const textPrimary = theme.textPrimary || "#2D2D2D";
+    const accentPrimary = theme.accentPrimary || "#E9EEF3";
 
     const defaults: Record<string, Record<string, { bg: string; text: string }>> = {
       home: {
@@ -102,6 +104,7 @@ export function AdminPageColors({ pageKey }: AdminPageColorsProps) {
         hero: { bg: bg, text: textPrimary },
         form: { bg: bg, text: textPrimary },
         whatsappBox: { bg: textPrimary, text: bg },
+        whatsappButton: { bg: accentPrimary, text: textPrimary },
         faq: { bg: bgLight, text: textPrimary }
       }
     };

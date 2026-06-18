@@ -183,6 +183,7 @@ export const initialSiteContent = {
       hero: { bg: "", text: "" },
       form: { bg: "", text: "" },
       whatsappBox: { bg: "", text: "" },
+      whatsappButton: { bg: "", text: "" },
       faq: { bg: "", text: "" }
     }
   }

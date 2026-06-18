@@ -267,6 +267,7 @@ export default function Contact() {
   const heroColors = content.sectionColors?.contact?.hero;
   const formColors = content.sectionColors?.contact?.form;
   const whatsappColors = content.sectionColors?.contact?.whatsappBox;
+  const whatsappButtonColors = content.sectionColors?.contact?.whatsappButton;
   const faqColors = content.sectionColors?.contact?.faq;
 
   return (
@@ -361,8 +362,8 @@ export default function Contact() {
                 href={`https://wa.me/${globalData.contactPhone.replace(/\D/g, "")}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-3 bg-[var(--color-accent-primary)] text-[var(--color-text-primary)] px-6 py-3 text-[12px] tracking-[0.2em] uppercase hover:bg-white transition-all duration-300"
-                style={{ fontFamily: "'Inter', sans-serif" }}
+                className="group inline-flex items-center gap-3 bg-[var(--color-accent-primary)] text-[var(--color-text-primary)] px-6 py-3 text-[12px] tracking-[0.2em] uppercase hover:bg-white hover:text-[var(--color-text-primary)] transition-all duration-300"
+                style={{ fontFamily: "'Inter', sans-serif", backgroundColor: whatsappButtonColors?.bg || undefined, color: whatsappButtonColors?.text || undefined }}
               >
                 <MessageCircle size={14} />
                 Chat on WhatsApp
