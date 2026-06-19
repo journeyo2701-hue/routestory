@@ -33,11 +33,10 @@ export default function AdminLayout() {
       const res = await fetch(`/api/${adminPath}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ username, password })
       });
       if (res.ok) {
-        const data = await res.json();
-        localStorage.setItem("rs_admin_token", data.token);
         localStorage.setItem("rs_admin_logged_in", "true");
         setIsLoggedIn(true);
         setError("");
@@ -50,9 +49,11 @@ export default function AdminLayout() {
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/admin/logout", { method: "POST" });
+    } catch (e) {}
     localStorage.removeItem("rs_admin_logged_in");
-    localStorage.removeItem("rs_admin_token");
     setIsLoggedIn(false);
     setUsername("");
     setPassword("");
