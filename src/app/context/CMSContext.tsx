@@ -147,9 +147,13 @@ export function CMSProvider({ children }: { children: ReactNode }) {
     setIsSaving(true);
     setSaveStatus(null);
     try {
+      const token = localStorage.getItem("rs_admin_token");
       const res = await fetch("/api/content", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          ...(token ? { "Authorization": `Bearer ${token}` } : {})
+        },
         body: JSON.stringify(content)
       });
       if (res.ok) {

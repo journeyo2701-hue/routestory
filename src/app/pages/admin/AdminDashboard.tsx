@@ -18,7 +18,12 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/contact")
+    const token = localStorage.getItem("rs_admin_token");
+    fetch("/api/contact", {
+      headers: {
+        ...(token ? { "Authorization": `Bearer ${token}` } : {})
+      }
+    })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch enquiries");
         return res.json();

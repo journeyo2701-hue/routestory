@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { Outlet, Link, useLocation } from "react-router";
+import { Outlet, Link, useLocation, useParams } from "react-router";
 import { Home, Map, Compass, Info, MessageSquare, Palette, FileText, LogOut, Lock, CheckCircle2, AlertCircle, Loader2, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useCMS } from "../context/CMSContext";
 
 export default function AdminLayout() {
   const location = useLocation();
+  const { adminPath } = useParams<{ adminPath: string }>();
 
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     return localStorage.getItem("rs_admin_logged_in") === "true";
@@ -29,12 +30,14 @@ export default function AdminLayout() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch("/api/admin/login", {
+      const res = await fetch(`/api/${adminPath}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password })
       });
       if (res.ok) {
+        const data = await res.json();
+        localStorage.setItem("rs_admin_token", data.token);
         localStorage.setItem("rs_admin_logged_in", "true");
         setIsLoggedIn(true);
         setError("");
@@ -49,19 +52,20 @@ export default function AdminLayout() {
 
   const handleLogout = () => {
     localStorage.removeItem("rs_admin_logged_in");
+    localStorage.removeItem("rs_admin_token");
     setIsLoggedIn(false);
     setUsername("");
     setPassword("");
   };
 
   const navItems = [
-    { name: "Global Settings", path: "/rs-admin/global", icon: <FileText size={20} /> },
-    { name: "Theme Settings", path: "/rs-admin/theme", icon: <Palette size={20} /> },
-    { name: "Home Page", path: "/rs-admin/home", icon: <Home size={20} /> },
-    { name: "Destinations", path: "/rs-admin/destinations", icon: <Map size={20} /> },
-    { name: "Reviews", path: "/rs-admin/reviews", icon: <Compass size={20} /> },
-    { name: "About Page", path: "/rs-admin/about", icon: <Info size={20} /> },
-    { name: "Contact Page", path: "/rs-admin/contact", icon: <MessageSquare size={20} /> },
+    { name: "Global Settings", path: `/${adminPath}/global`, icon: <FileText size={20} /> },
+    { name: "Theme Settings", path: `/${adminPath}/theme`, icon: <Palette size={20} /> },
+    { name: "Home Page", path: `/${adminPath}/home`, icon: <Home size={20} /> },
+    { name: "Destinations", path: `/${adminPath}/destinations`, icon: <Map size={20} /> },
+    { name: "Reviews", path: `/${adminPath}/reviews`, icon: <Compass size={20} /> },
+    { name: "About Page", path: `/${adminPath}/about`, icon: <Info size={20} /> },
+    { name: "Contact Page", path: `/${adminPath}/contact`, icon: <MessageSquare size={20} /> },
   ];
 
   if (!isLoggedIn) {
@@ -174,7 +178,7 @@ export default function AdminLayout() {
         <nav className="flex-1 overflow-y-auto py-4">
           <ul className="space-y-1 px-3">
             {navItems.map((item) => {
-              const isActive = location.pathname === item.path || (item.path !== "/rs-admin" && location.pathname.startsWith(item.path));
+              const isActive = location.pathname === item.path || (item.path !== `/${adminPath}` && location.pathname.startsWith(item.path));
               return (
                 <li key={item.name}>
                   <Link

@@ -7,6 +7,8 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 
 import AdminLayout from "./layouts/AdminLayout";
+import AdminGuard from "./components/AdminGuard";
+import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminDestinations from "./pages/admin/AdminDestinations";
 import AdminReviews from "./pages/admin/AdminReviews";
@@ -29,17 +31,27 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "/rs-admin",
-    Component: AdminLayout,
+    path: "/:adminPath",
+    Component: AdminGuard,
     children: [
-      { index: true, Component: AdminDashboard },
+      {
+        path: "",
+        Component: AdminLayout,
+        children: [
+          { index: true, Component: AdminDashboard },
       { path: "destinations", Component: AdminDestinations },
       { path: "reviews", Component: AdminReviews },
       { path: "about", Component: AdminAbout },
       { path: "contact", Component: AdminContact },
       { path: "theme", Component: AdminTheme },
-      { path: "home", Component: AdminHome },
-      { path: "global", Component: AdminGlobal }
+          { path: "home", Component: AdminHome },
+          { path: "global", Component: AdminGlobal }
+        ]
+      }
     ],
+  },
+  {
+    path: "*",
+    Component: NotFound
   }
 ]);

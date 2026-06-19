@@ -17,6 +17,7 @@ function ContactForm() {
     destination: "",
     travelDate: "",
     message: "",
+    website: "", // Honeypot field
   });
   const [submitted, setSubmitted] = useState(false);
 
@@ -115,6 +116,17 @@ function ContactForm() {
           />
         </div>
       </div>
+      
+      {/* Honeypot field - visually hidden */}
+      <input
+        type="text"
+        name="website"
+        value={form.website}
+        onChange={handleChange}
+        style={{ display: "none" }}
+        tabIndex={-1}
+        autoComplete="off"
+      />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div>
