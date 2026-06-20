@@ -20,13 +20,11 @@ function ReviewCard({ review, gridColors }: { review: any; gridColors: any }) {
         <Quote className="text-[var(--color-accent-primary)]/20 w-6 h-6 absolute top-6 right-6" />
         
         {/* Rating Display */}
-        {(review.rating || 5) && (
-          <div className="flex gap-1 mb-4">
-            {[...Array(review.rating || 5)].map((_, i) => (
-              <Star key={i} size={14} className="fill-[#FFC107] text-[#FFC107]" />
-            ))}
-          </div>
-        )}
+        <div className="flex gap-1 mb-4">
+          {Array.from({ length: Math.max(0, Math.min(5, Math.floor(Number(review.rating) || 5))) }).map((_, i) => (
+            <Star key={i} size={14} className="fill-[#FFC107] text-[#FFC107]" />
+          ))}
+        </div>
 
         <p
           className="text-[var(--color-text-primary)]/80 text-[14px] leading-relaxed mb-6 relative z-10"
