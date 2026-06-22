@@ -66,12 +66,7 @@ export function CMSProvider({ children }: { children: ReactNode }) {
               }))
             : initialSiteContent.featuredJourneysData,
           destinationsData: parsed.destinationsData
-            ? Array.from(
-                new Set([
-                  ...Object.keys(initialSiteContent.destinationsData),
-                  ...Object.keys(parsed.destinationsData),
-                ])
-              ).reduce((acc, category) => {
+            ? Object.keys(parsed.destinationsData).reduce((acc, category) => {
                 // Flatten all initial destinations for lookup by ID
                 const allInitialDests = Object.values(initialSiteContent.destinationsData).flat() as any[];
                 acc[category] = (parsed.destinationsData[category] || []).map((dest: any) => {

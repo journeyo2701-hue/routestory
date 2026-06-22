@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Search, Clock, ArrowRight, X } from "lucide-react";
+import { Search, Clock, ArrowRight, X, ChevronLeft, ChevronRight, LayoutGrid } from "lucide-react";
 import { SEO } from "../components/SEO";
 import { useCMS } from "../context/CMSContext";
 import { Link } from "react-router";
@@ -223,14 +223,25 @@ export default function Destinations() {
 
   const categoriesList = [
     { key: "all", label: "All Experiences" },
-    ...Object.keys(destinations || {}).map((key) => ({
-      key,
-      label: key.charAt(0).toUpperCase() + key.slice(1)
-    }))
+    ...Object.keys(destinations || {})
+      .filter((key) => destinations[key] && destinations[key].length > 0)
+      .map((key) => ({
+        key,
+        label: key.charAt(0).toUpperCase() + key.slice(1)
+      }))
   ];
 
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [viewAllCats, setViewAllCats] = useState(false);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const scrollAmount = 300;
+      scrollRef.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+    }
+  };
 
   const filtered = allDestinations.filter((d) => {
     let matchesCategory = false;
@@ -314,25 +325,75 @@ export default function Destinations() {
                   />
                 </div>
 
-                {/* Categories */}
-                <div className="flex flex-nowrap gap-3 w-full overflow-x-auto pb-4 pt-1 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-[var(--color-text-primary)]/10 hover:[&::-webkit-scrollbar-thumb]:bg-[var(--color-text-primary)]/30 [&::-webkit-scrollbar-thumb]:rounded-full scroll-smooth">
-                  {categoriesList.map((cat) => (
-                    <button
-                      key={cat.key}
-                      onClick={() => setActiveCategory(cat.key)}
-                      className={`flex-none whitespace-nowrap px-6 py-2.5 rounded-full text-[10px] uppercase tracking-[0.15em] transition-colors duration-300 font-medium ${activeCategory === cat.key
-                        ? "bg-[#0a0a0a] text-white border border-[#0a0a0a]"
-                        : "bg-transparent border border-black/20 text-black/70 hover:border-black hover:text-black"
-                        }`}
-                      style={{
-                        fontFamily: "'Inter', sans-serif",
-                        color: activeCategory !== cat.key && gridColors?.text ? gridColors.text : undefined,
-                        borderColor: activeCategory !== cat.key && gridColors?.text ? `${gridColors.text}33` : undefined
+                {/* Categories Wrapper */}
+                <div className="flex items-start sm:items-center gap-2 w-full">
+                  {!viewAllCats && (
+                    <button 
+                      onClick={() => scroll('left')} 
+                      className="flex-none mt-1 sm:mt-0 p-2.5 rounded-full border border-black/20 text-black/70 hover:border-black hover:text-black transition-colors"
+                      style={{ 
+                        color: gridColors?.text ? `${gridColors.text}b2` : undefined, 
+                        borderColor: gridColors?.text ? `${gridColors.text}33` : undefined 
                       }}
                     >
-                      {cat.label}
+                      <ChevronLeft size={16} />
                     </button>
-                  ))}
+                  )}
+
+                  {/* Categories */}
+                  <div 
+                    ref={scrollRef}
+                    className={`flex-1 flex gap-3 ${viewAllCats ? 'flex-wrap' : 'flex-nowrap overflow-x-auto'} pb-2 pt-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] scroll-smooth`}
+                  >
+                    {categoriesList.map((cat) => (
+                      <button
+                        key={cat.key}
+                        onClick={() => setActiveCategory(cat.key)}
+                        className={`flex-none whitespace-nowrap px-6 py-2.5 rounded-full text-[10px] uppercase tracking-[0.15em] transition-colors duration-300 font-medium ${activeCategory === cat.key
+                          ? "bg-[#0a0a0a] text-white border border-[#0a0a0a]"
+                          : "bg-transparent border border-black/20 text-black/70 hover:border-black hover:text-black"
+                          }`}
+                        style={{
+                          fontFamily: "'Inter', sans-serif",
+                          color: activeCategory !== cat.key && gridColors?.text ? gridColors.text : undefined,
+                          borderColor: activeCategory !== cat.key && gridColors?.text ? `${gridColors.text}33` : undefined
+                        }}
+                      >
+                        {cat.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  {!viewAllCats && (
+                    <button 
+                      onClick={() => scroll('right')} 
+                      className="flex-none mt-1 sm:mt-0 p-2.5 rounded-full border border-black/20 text-black/70 hover:border-black hover:text-black transition-colors"
+                      style={{ 
+                        color: gridColors?.text ? `${gridColors.text}b2` : undefined, 
+                        borderColor: gridColors?.text ? `${gridColors.text}33` : undefined 
+                      }}
+                    >
+                      <ChevronRight size={16} />
+                    </button>
+                  )}
+
+                  {/* View All Toggle */}
+                  <div className="flex-none border-l border-black/10 pl-2 sm:pl-3 ml-1 sm:ml-2 mt-1 sm:mt-0" style={{ borderColor: gridColors?.text ? `${gridColors.text}1a` : undefined }}>
+                    <button 
+                      onClick={() => setViewAllCats(!viewAllCats)}
+                      className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-black/5 hover:bg-black/10 transition-colors"
+                      style={{ 
+                        color: gridColors?.text || undefined,
+                        backgroundColor: gridColors?.text ? `${gridColors.text}0d` : undefined
+                      }}
+                      title={viewAllCats ? "View Less" : "View All Categories"}
+                    >
+                      <LayoutGrid size={16} />
+                      <span className="hidden lg:inline text-[10px] uppercase tracking-[0.15em] font-medium">
+                        {viewAllCats ? "Less" : "View All"}
+                      </span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
