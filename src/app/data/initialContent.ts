@@ -1,26 +1,7 @@
 import { destinations, experiences, featuredJourneys, testimonials, teamMembers, faqs } from "./index";
 import { defaultTheme } from "./theme";
 
-// Map default fields for destinations if not present
-// Flatten all destinations from regions in index.ts and map their default fields
-const allDests = Object.keys(destinations).flatMap((region) => {
-  return (destinations as any)[region].map((dest: any) => ({
-    price: "18500",
-    duration: "4 Days / 3 Nights",
-    difficulty: "Moderate",
-    ...dest
-  }));
-});
 
-// Group them by category
-const mappedDestinations = allDests.reduce((acc: any, dest: any) => {
-  const category = (dest.tag || "other").toLowerCase();
-  if (!acc[category]) {
-    acc[category] = [];
-  }
-  acc[category].push(dest);
-  return acc;
-}, {} as any);
 
 // Map default fields for featured journeys if not present
 const mappedFeaturedJourneys = featuredJourneys.map((j: any) => ({
@@ -78,7 +59,7 @@ export const initialSiteContent = {
       image: "https://images.unsplash.com/photo-1469521669194-babb45599def?w=1800&h=800&fit=crop&auto=format"
     }
   },
-  destinationsData: mappedDestinations,
+  destinationsData: {},
   experiencesData: experiences,
   featuredJourneysData: mappedFeaturedJourneys,
   testimonialsData: testimonials,

@@ -87,7 +87,7 @@ function DestinationCard({ dest, index }: { dest: any; index: number }) {
           <div className="flex flex-col sm:flex-row sm:items-end justify-between border-t border-[var(--color-text-primary)]/10 pt-8 gap-6 sm:gap-0">
             <div>
               <p className="text-[var(--color-text-primary)]/50 text-[9px] uppercase tracking-[0.2em] mb-1.5" style={{ fontFamily: "'Inter', sans-serif" }}>
-                Curation Direct Rate
+                Starting from
               </p>
               <p className="text-[var(--color-text-primary)] flex items-baseline gap-1" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: "1.6rem" }}>
                 ₹{dest.price || "18,500"} <span className="text-[10px] font-normal text-[var(--color-text-primary)]/50 tracking-wider">/person</span>
