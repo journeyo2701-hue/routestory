@@ -315,7 +315,7 @@ export default function Destinations() {
                 </div>
 
                 {/* Categories */}
-                <div className="flex flex-wrap gap-3 w-full">
+                <div className="flex gap-3 w-full overflow-x-auto pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                   {categoriesList.map((cat) => (
                     <button
                       key={cat.key}
