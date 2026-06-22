@@ -315,12 +315,12 @@ export default function Destinations() {
                 </div>
 
                 {/* Categories */}
-                <div className="flex gap-3 w-full overflow-x-auto pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                <div className="flex flex-nowrap gap-3 w-full overflow-x-auto pb-4 pt-1 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-[var(--color-text-primary)]/10 hover:[&::-webkit-scrollbar-thumb]:bg-[var(--color-text-primary)]/30 [&::-webkit-scrollbar-thumb]:rounded-full scroll-smooth">
                   {categoriesList.map((cat) => (
                     <button
                       key={cat.key}
                       onClick={() => setActiveCategory(cat.key)}
-                      className={`flex-none px-6 py-2.5 rounded-full text-[10px] uppercase tracking-[0.15em] transition-colors duration-300 font-medium ${activeCategory === cat.key
+                      className={`flex-none whitespace-nowrap px-6 py-2.5 rounded-full text-[10px] uppercase tracking-[0.15em] transition-colors duration-300 font-medium ${activeCategory === cat.key
                         ? "bg-[#0a0a0a] text-white border border-[#0a0a0a]"
                         : "bg-transparent border border-black/20 text-black/70 hover:border-black hover:text-black"
                         }`}
