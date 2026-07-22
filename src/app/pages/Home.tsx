@@ -91,7 +91,7 @@ function HeroSection() {
             <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
           </Link>
           <Link
-            to="/customize"
+            to="/contact"
             className="flex items-center gap-3 border border-white/50 text-white px-8 py-4 text-[12px] tracking-[0.2em] uppercase hover:bg-white/10 transition-all duration-300"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
